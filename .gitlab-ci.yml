@@ -7,7 +7,7 @@ stages:
 build:
   stage: build
   image:
-    name: golang:1.13.1
+    name: golang:1.18.2
   script:
     - go build -o main main.go
   artifacts:
