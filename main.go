@@ -1,10 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
-
-	"github.com/gin-gonic/gin"
 )
 
 func getPort() string {
@@ -16,12 +15,12 @@ func getPort() string {
 }
 
 func main() {
-	router := gin.New()
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
-	router.GET("/", func(ctx *gin.Context) {
 		hostname, _ := os.Hostname()
-		ctx.JSON(http.StatusOK, "Pod name is "+hostname)
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(fmt.Sprintf("Pod name is %s", hostname)))
 	})
 
-	router.Run(getPort())
+	http.ListenAndServe(getPort(), nil)
 }
