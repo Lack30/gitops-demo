@@ -1,0 +1,66 @@
+stages:
+  - build
+  - publish
+  - deploy-dev
+  - deploy-prod
+
+build:
+  stage: build
+  image:
+    name: golang:1.13.1
+  script:
+    - go build -o main main.go
+  artifacts:
+    paths:
+      - main
+  variables:
+    CGO_ENABLED: 0
+
+publish:
+  stage: publish
+  image:
+    name: cnych/kaniko-executor:debug
+    entrypoint: [""]
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile ./Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  dependencies:
+    - build
+  only:
+    - main
+
+deploy-dev:
+  stage: deploy-dev
+  image: cnych/kustomize:v1.0
+  before_script:
+    - git remote set-url origin http://${CI_USERNAME}:${CI_PASSWORD}@gitlab.howlinkdev.com/gitops/demo.git
+    - git config --global user.email "598223084@qq.com"
+    - git config --global user.name "root"
+  script:
+    - git checkout -B main
+    - cd deployment/dev
+    - kustomize edit set image $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - cat kustomization.yaml
+    - git commit -am '[skip ci] DEV image update'
+    - git push origin main
+  only:
+    - main
+
+deploy-prod:
+  stage: deploy-prod
+  image: cnych/kustomize:v1.0
+  before_script:
+    - git remote set-url origin http://${CI_USERNAME}:${CI_PASSWORD}@gitlab.howlinkdev.com/gitops/demo.git
+    - git config --global user.email "598223084@qq.com"
+    - git config --global user.name "root"
+  script:
+    - git checkout -B main
+    - git pull origin main
+    - cd deployment/prod
+    - kustomize edit set image $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - cat kustomization.yaml
+    - git commit -am '[skip ci] PROD image update'
+    - git push origin main
+  only:
+    - main
+  when: manual
