@@ -24,3 +24,5 @@ spec:
         env:
         - name: APP_PORT
           value: "5000"
+        - name: APP_ENV
+          value: "dev"
