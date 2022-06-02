@@ -27,7 +27,7 @@ build:
 publish:
   stage: publish
   image:
-    name: kubebiz/kaniko:executor-v0.16.0
+    name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   script:
     - mkdir -p /kaniko/.docker
