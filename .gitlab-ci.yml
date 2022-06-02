@@ -38,7 +38,7 @@ publish:
     - cat /kaniko/.docker/config.json
     - echo $PROJECT_DIR
     - echo $REGISTRY_IMAGE:$COMMIT_SHORT_SHA
-    - /kaniko/executor --skip-tls-verify --context $CI_PROJECT_DIR --dockerfile ./Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - /kaniko/executor --insecure --skip-tls-verify --context $CI_PROJECT_DIR --dockerfile ./Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   dependencies:
     - build
   only:
