@@ -35,9 +35,11 @@ publish:
   script:
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - cat /kaniko/.docker/config.json
-    - echo $PROJECT_DIR
-    - echo $REGISTRY_IMAGE:$COMMIT_SHORT_SHA
+    #- cat /kaniko/.docker/config.json
+    #- echo $PROJECT_DIR
+    #- echo $REGISTRY_IMAGE:$COMMIT_SHORT_SHA
+    #- mkdir -p /kaniko/ssl/certs/
+    - echo $CI_HARBOR_CERT >> /kaniko/ssl/certs/ca-certificates.crt
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile ./Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   dependencies:
     - build
