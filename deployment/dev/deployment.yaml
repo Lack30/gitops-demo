@@ -15,7 +15,7 @@ spec:
         app: gitops-demo
     spec:
       containers:
-      - image: gitops/demo
+      - image: harbor.howlinkdev.com/gitops/demo
         name: gitops-demo
         imagePullPolicy: Always
         ports:
