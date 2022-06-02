@@ -40,13 +40,13 @@ publish:
     - echo $PROJECT_DIR
     - echo $REGISTRY_IMAGE:$COMMIT_SHORT_SHA
     - >-
-      /kaniko/executor 
+      nohup /kaniko/executor 
       --insecure --skip-tls-verify 
       --context $CI_PROJECT_DIR 
       --dockerfile ./Dockerfile 
       --reproducible 
       --label org.opencontainers.image.revision=$CI_COMMIT_SHORT_SHA --label org.opencontainers.image.source=$GIT_URL 
-      --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA &> 1.txt
+      --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA > 1.txt &
     - sleep 10m
   dependencies:
     - build
