@@ -10,12 +10,5 @@ spec:
   rules:
     - host: demo.dev.howlinkdev.com
       http:
-        paths:
-          - backend:
-              service:
-                name: gitops-demo-svc
-                port:
-                  number: 80
-            path: /
-            pathType: prefix
+c
 

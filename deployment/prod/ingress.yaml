@@ -11,11 +11,11 @@ spec:
     - host: demo.prod.howlinkdev.com
       http:
         paths:
-          - backend:
+          - path: /
+            pathType: Exact
+            backend:
               service:
                 name: gitops-demo-svc
                 port:
                   number: 80
-            path: /
-            pathType: prefix
 
