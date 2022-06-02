@@ -8,6 +8,7 @@ variables:
   PROJECT_DIR: $CI_PROJECT_DIR
   REGISTRY_IMAGE: $CI_REGISTRY_IMAGE
   COMMIT_SHORT_SHA: $CI_COMMIT_SHORT_SHA
+  GIT_URL: http://gitlab.howlinkdev.com
 
 stages:
   - build
@@ -38,7 +39,14 @@ publish:
     - cat /kaniko/.docker/config.json
     - echo $PROJECT_DIR
     - echo $REGISTRY_IMAGE:$COMMIT_SHORT_SHA
-    - /kaniko/executor --insecure --skip-tls-verify --context $CI_PROJECT_DIR --dockerfile ./Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - >-
+      /kaniko/executor 
+      --insecure --skip-tls-verify 
+      --context $CI_PROJECT_DIR 
+      --dockerfile ./Dockerfile 
+      --reproducible 
+      --label org.opencontainers.image.revision=$CI_COMMIT_SHORT_SHA --label org.opencontainers.image.source=$GIT_URL 
+      --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   dependencies:
     - build
   only:
