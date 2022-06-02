@@ -10,7 +10,6 @@ build:
     name: golang:1.18.2
   script:
     - go build -o main main.go
-    - go build -o ${CI_NAME} main.go
   artifacts:
     paths:
       - main

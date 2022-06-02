@@ -7,5 +7,5 @@ resources:
 - service.yaml
 namespace: dev
 images:
-- name: cnych/gitops-demo
-  newTag: 3f520d48
+- name: gitops/demo
+  #newTag: 3f520d48
