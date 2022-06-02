@@ -5,7 +5,7 @@ variables:
 #  CI_PROJECT_DIR: gitops
 #  CI_REGISTRY_IMAGE: harbor.howlinkdev.com/gitops/demo
 #  CI_COMMIT_SHORT_SHA: 22e42c30
-#  PROJECT_DIR: $CI_PROJECT_DIR
+  PROJECT_DIR: $CI_PROJECT_DIR
   REGISTRY_IMAGE: $CI_REGISTRY_IMAGE
   COMMIT_SHORT_SHA: $CI_COMMIT_SHORT_SHA
 
@@ -36,9 +36,8 @@ publish:
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - cat /kaniko/.docker/config.json
-    #- echo $PROJECT_DIR
-    #- echo $REGISTRY_IMAGE:$COMMIT_SHORT_SHA
-    #- mkdir -p /kaniko/ssl/certs/
+    - echo $PROJECT_DIR
+    - echo $REGISTRY_IMAGE:$COMMIT_SHORT_SHA
     - /kaniko/executor --skip-tls-verify --context $CI_PROJECT_DIR --dockerfile ./Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   dependencies:
     - build
