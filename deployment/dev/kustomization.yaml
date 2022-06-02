@@ -8,4 +8,4 @@ resources:
 namespace: dev
 images:
 - name: harbor.howlinkdev.com/gitops/demo
-  #newTag: 3f520d48
+  newTag: 3f520d48

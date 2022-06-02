@@ -8,4 +8,4 @@ resources:
 namespace: prod
 images:
 - name: harbor.howlinkdev.com/gitops/demo
-  #newTag: 22e42c30
+  newTag: 22e42c30
